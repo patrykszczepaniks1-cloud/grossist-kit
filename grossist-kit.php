@@ -37,10 +37,12 @@ add_action( 'plugins_loaded', function () {
     }
 
     require_once GK_PLUGIN_DIR . 'includes/class-customer-groups.php';
+    require_once GK_PLUGIN_DIR . 'includes/class-org-number.php';
     require_once GK_PLUGIN_DIR . 'includes/class-signups.php';
     require_once GK_PLUGIN_DIR . 'includes/class-admin-menu.php';
 
     new GK_Customer_Groups();
+    new GK_Org_Number();
     new GK_Signups();
     new GK_Admin_Menu();
 } );

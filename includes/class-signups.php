@@ -247,7 +247,6 @@ class GK_Signups {
         $contact = get_post_meta( $post_id, 'gk_contact_name', true );
         $company = get_post_meta( $post_id, 'gk_company',      true );
         $phone   = get_post_meta( $post_id, 'gk_phone',        true );
-        $address = get_post_meta( $post_id, 'gk_address',      true );
 
         if ( email_exists( $email ) ) {
             wp_safe_redirect( add_query_arg( [ 'page' => 'grossist-kit', 'tab' => 'signups', 'gk_notice' => 'already_exists' ], admin_url( 'admin.php' ) ) );
@@ -266,12 +265,16 @@ class GK_Signups {
         $user = new WP_User( $user_id );
         $user->set_role( 'customer' );
 
-        update_user_meta( $user_id, 'first_name',        $contact );
-        update_user_meta( $user_id, 'billing_company',   $company );
-        update_user_meta( $user_id, 'billing_email',     $email );
-        update_user_meta( $user_id, 'billing_phone',     $phone );
-        update_user_meta( $user_id, 'billing_address_1', $address );
-        update_user_meta( $user_id, GK_USER_META_KEY,    $group );
+        $city    = get_post_meta( $post_id, 'gk_city',       true );
+        $org_num = get_post_meta( $post_id, 'gk_org_number', true );
+
+        update_user_meta( $user_id, 'first_name',                   $contact );
+        update_user_meta( $user_id, 'billing_company',              $company );
+        update_user_meta( $user_id, 'billing_email',                $email );
+        update_user_meta( $user_id, 'billing_phone',                $phone );
+        update_user_meta( $user_id, 'billing_city',                 $city );
+        update_user_meta( $user_id, 'billing_organisation_number',  $org_num );
+        update_user_meta( $user_id, GK_USER_META_KEY,               $group );
 
         // Update signup post status
         wp_update_post( [ 'ID' => $post_id, 'post_status' => 'publish' ] );
