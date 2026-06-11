@@ -28,6 +28,7 @@ class GK_Admin_Menu {
     }
 
     public function enqueue_assets( string $hook ): void {
+<<<<<<< HEAD
 
     $screen = get_current_screen();
 
@@ -36,6 +37,39 @@ class GK_Admin_Menu {
         strpos( $screen->id, 'grossist-kit' ) === false
     ) {
         return;
+=======
+        if ( 'toplevel_page_grossist-kit' !== $hook ) return;
+
+        // Material Icons — loaded as a proper link tag, not @import
+        wp_enqueue_style(
+            'material-icons-round',
+            'https://fonts.googleapis.com/icon?family=Material+Icons+Round',
+            [],
+            null
+        );
+
+        wp_enqueue_style(
+            'grossist-kit-dashboard',
+            GK_PLUGIN_URL . 'assets/dashboard.css',
+            [ 'material-icons-round' ],
+            GK_VERSION
+        );
+
+        wp_enqueue_script(
+            'grossist-kit-dashboard',
+            GK_PLUGIN_URL . 'assets/dashboard.js',
+            [ 'jquery' ],
+            GK_VERSION,
+            true
+        );
+
+        wp_localize_script( 'grossist-kit-dashboard', 'gkData', [
+            'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
+            'nonce'     => wp_create_nonce( 'gk_ajax' ),
+            'editNonce' => wp_create_nonce( 'gk_edit_customer' ),
+            'adminPost' => admin_url( 'admin-post.php' ),
+        ] );
+>>>>>>> fe893e5c57cd321624610c06bde6168af75f70ca
     }
 
     wp_enqueue_style(
