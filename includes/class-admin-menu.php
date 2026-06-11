@@ -28,83 +28,28 @@ class GK_Admin_Menu {
     }
 
     public function enqueue_assets( string $hook ): void {
-<<<<<<< HEAD
-
-    $screen = get_current_screen();
-
-    if (
-        ! $screen ||
-        strpos( $screen->id, 'grossist-kit' ) === false
-    ) {
-        return;
-=======
         if ( 'toplevel_page_grossist-kit' !== $hook ) return;
 
-        // Material Icons — loaded as a proper link tag, not @import
+        // Preconnect to Google Fonts for faster icon font load
+        wp_enqueue_style( 'google-fonts-preconnect', 'https://fonts.gstatic.com', [], null );
+
+        // Material Icons Round — enqueue with display=block to prevent invisible icons
         wp_enqueue_style(
-            'material-icons-round',
-            'https://fonts.googleapis.com/icon?family=Material+Icons+Round',
+            'material-icons',
+            'https://fonts.googleapis.com/icon?family=Material+Icons+Round&display=block',
             [],
             null
         );
 
-        wp_enqueue_style(
-            'grossist-kit-dashboard',
-            GK_PLUGIN_URL . 'assets/dashboard.css',
-            [ 'material-icons-round' ],
-            GK_VERSION
-        );
-
-        wp_enqueue_script(
-            'grossist-kit-dashboard',
-            GK_PLUGIN_URL . 'assets/dashboard.js',
-            [ 'jquery' ],
-            GK_VERSION,
-            true
-        );
-
+        wp_enqueue_style( 'grossist-kit-dashboard', GK_PLUGIN_URL . 'assets/dashboard.css', [ 'material-icons' ], GK_VERSION );
+        wp_enqueue_script( 'grossist-kit-dashboard', GK_PLUGIN_URL . 'assets/dashboard.js', [ 'jquery' ], GK_VERSION, true );
         wp_localize_script( 'grossist-kit-dashboard', 'gkData', [
-            'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
-            'nonce'     => wp_create_nonce( 'gk_ajax' ),
-            'editNonce' => wp_create_nonce( 'gk_edit_customer' ),
-            'adminPost' => admin_url( 'admin-post.php' ),
+            'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
+            'nonce'       => wp_create_nonce( 'gk_ajax' ),
+            'editNonce'   => wp_create_nonce( 'gk_edit_customer' ),
+            'adminPost'   => admin_url( 'admin-post.php' ),
         ] );
->>>>>>> fe893e5c57cd321624610c06bde6168af75f70ca
     }
-
-    wp_enqueue_style(
-        'material-icons',
-        'https://fonts.googleapis.com/icon?family=Material+Icons+Round',
-        [],
-        null
-    );
-
-    wp_enqueue_style(
-        'grossist-kit-dashboard',
-        GK_PLUGIN_URL . 'assets/dashboard.css',
-        [ 'material-icons' ],
-        filemtime( GK_PLUGIN_DIR . 'assets/dashboard.css' )
-    );
-
-    wp_enqueue_script(
-        'grossist-kit-dashboard',
-        GK_PLUGIN_URL . 'assets/dashboard.js',
-        [ 'jquery' ],
-        filemtime( GK_PLUGIN_DIR . 'assets/dashboard.js' ),
-        true
-    );
-
-    wp_localize_script(
-        'grossist-kit-dashboard',
-        'gkData',
-        [
-            'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
-            'nonce'     => wp_create_nonce( 'gk_ajax' ),
-            'editNonce' => wp_create_nonce( 'gk_edit_customer' ),
-            'adminPost' => admin_url( 'admin-post.php' ),
-        ]
-    );
-}
 
     // ─── Dashboard shell ─────────────────────────────────────────────────────
 
@@ -136,7 +81,8 @@ class GK_Admin_Menu {
             'groups'    => 'Kundgrupper och prisnivåer',
         ];
         ?>
-        <div class="gk-root wrap">
+        <div class="gk-wrap wrap">
+        <div class="gk-root">
 
             <!-- SIDEBAR -->
             <aside class="gk-sidebar">
@@ -223,7 +169,8 @@ class GK_Admin_Menu {
                     <div class="gk-footer">GrossistKit <?php echo GK_VERSION; ?> · <?php echo esc_html( $site_name ); ?></div>
                 </div>
             </div>
-        </div>
+        </div><!-- /.gk-root -->
+        </div><!-- /.gk-wrap.wrap -->
         <?php
     }
 
