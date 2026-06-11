@@ -28,17 +28,49 @@ class GK_Admin_Menu {
     }
 
     public function enqueue_assets( string $hook ): void {
-        if ( 'toplevel_page_grossist-kit' !== $hook ) return;
-        wp_enqueue_style( 'material-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons+Round', [], null );
-        wp_enqueue_style( 'grossist-kit-dashboard', GK_PLUGIN_URL . 'assets/dashboard.css', [ 'material-icons' ], GK_VERSION );
-        wp_enqueue_script( 'grossist-kit-dashboard', GK_PLUGIN_URL . 'assets/dashboard.js', [ 'jquery' ], GK_VERSION, true );
-        wp_localize_script( 'grossist-kit-dashboard', 'gkData', [
-            'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
-            'nonce'       => wp_create_nonce( 'gk_ajax' ),
-            'editNonce'   => wp_create_nonce( 'gk_edit_customer' ),
-            'adminPost'   => admin_url( 'admin-post.php' ),
-        ] );
+
+    $screen = get_current_screen();
+
+    if (
+        ! $screen ||
+        strpos( $screen->id, 'grossist-kit' ) === false
+    ) {
+        return;
     }
+
+    wp_enqueue_style(
+        'material-icons',
+        'https://fonts.googleapis.com/icon?family=Material+Icons+Round',
+        [],
+        null
+    );
+
+    wp_enqueue_style(
+        'grossist-kit-dashboard',
+        GK_PLUGIN_URL . 'assets/dashboard.css',
+        [ 'material-icons' ],
+        filemtime( GK_PLUGIN_DIR . 'assets/dashboard.css' )
+    );
+
+    wp_enqueue_script(
+        'grossist-kit-dashboard',
+        GK_PLUGIN_URL . 'assets/dashboard.js',
+        [ 'jquery' ],
+        filemtime( GK_PLUGIN_DIR . 'assets/dashboard.js' ),
+        true
+    );
+
+    wp_localize_script(
+        'grossist-kit-dashboard',
+        'gkData',
+        [
+            'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
+            'nonce'     => wp_create_nonce( 'gk_ajax' ),
+            'editNonce' => wp_create_nonce( 'gk_edit_customer' ),
+            'adminPost' => admin_url( 'admin-post.php' ),
+        ]
+    );
+}
 
     // ─── Dashboard shell ─────────────────────────────────────────────────────
 
