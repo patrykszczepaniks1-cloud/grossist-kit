@@ -54,49 +54,135 @@ class GK_Signups {
 
         ob_start();
         ?>
-        <div class="gk-signup-form-wrap" style="max-width:540px;">
+        <style>
+        .gk-sf-wrap { width: 100%; box-sizing: border-box; }
+        .gk-sf-wrap form { width: 100%; }
+        .gk-sf-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem 1.75rem;
+            margin-bottom: 1.25rem;
+        }
+        .gk-sf-full { grid-column: 1 / -1; }
+        .gk-sf-field { display: flex; flex-direction: column; gap: .4rem; }
+        .gk-sf-field label {
+            font-size: .82rem;
+            font-weight: 700;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            color: #1a1a2e;
+        }
+        .gk-sf-field input,
+        .gk-sf-field textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: .65rem .9rem;
+            border: 1.5px solid #dde1e7;
+            border-radius: 6px;
+            font-size: .97rem;
+            color: #1a1a2e;
+            background: #fff;
+            transition: border-color .15s, box-shadow .15s;
+        }
+        .gk-sf-field input:focus,
+        .gk-sf-field textarea:focus {
+            outline: none;
+            border-color: #9A0002;
+            box-shadow: 0 0 0 3px rgba(154,0,2,.1);
+        }
+        .gk-sf-field textarea { resize: vertical; min-height: 110px; }
+        .gk-sf-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: .75rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem 1.1rem;
+            background: #faf5f5;
+            border: 1.5px solid #e8d0d0;
+            border-radius: 6px;
+        }
+        .gk-sf-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            accent-color: #9A0002;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+        .gk-sf-checkbox label {
+            font-size: .93rem;
+            color: #333;
+            cursor: pointer;
+            line-height: 1.5;
+        }
+        .gk-sf-submit {
+            background: #9A0002;
+            color: #fff;
+            padding: .8rem 2.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: .02em;
+            transition: background .15s, transform .1s;
+        }
+        .gk-sf-submit:hover { background: #6e0001; transform: translateY(-1px); }
+        @media (max-width: 640px) {
+            .gk-sf-grid { grid-template-columns: 1fr; }
+        }
+        </style>
+
+        <div class="gk-sf-wrap">
             <form method="post" action="">
                 <?php wp_nonce_field( 'gk_signup_submit', 'gk_nonce' ); ?>
                 <input type="hidden" name="gk_action" value="signup">
 
-                <div style="margin-bottom:1.25rem;">
-                    <label style="display:block;font-weight:600;margin-bottom:.35rem;">Företagsnamn *</label>
-                    <input type="text" name="gk_company" required style="width:100%;padding:.6rem .8rem;border:1px solid #ddd;border-radius:4px;">
+                <div class="gk-sf-grid">
+
+                    <div class="gk-sf-field">
+                        <label>Företagsnamn *</label>
+                        <input type="text" name="gk_company" required placeholder="Ditt AB">
+                    </div>
+
+                    <div class="gk-sf-field">
+                        <label>Organisationsnummer *</label>
+                        <input type="text" name="gk_org_number" required placeholder="556000-0000">
+                    </div>
+
+                    <div class="gk-sf-field">
+                        <label>Kontaktperson *</label>
+                        <input type="text" name="gk_contact_name" required placeholder="För- och efternamn">
+                    </div>
+
+                    <div class="gk-sf-field">
+                        <label>Telefonnummer</label>
+                        <input type="tel" name="gk_phone" placeholder="+46 70 000 00 00">
+                    </div>
+
+                    <div class="gk-sf-field">
+                        <label>E-postadress *</label>
+                        <input type="email" name="gk_email" required placeholder="info@foretagetab.se">
+                    </div>
+
+                    <div class="gk-sf-field">
+                        <label>Stad</label>
+                        <input type="text" name="gk_city" placeholder="Stockholm">
+                    </div>
+
+                    <div class="gk-sf-field gk-sf-full">
+                        <label>Meddelande (valfritt)</label>
+                        <textarea name="gk_message" placeholder="Berätta gärna om er verksamhet eller ange eventuella önskemål..."></textarea>
+                    </div>
+
                 </div>
 
-                <div style="margin-bottom:1.25rem;">
-                    <label style="display:block;font-weight:600;margin-bottom:.35rem;">Organisationsnummer *</label>
-                    <input type="text" name="gk_org_number" required placeholder="556000-0000" style="width:100%;padding:.6rem .8rem;border:1px solid #ddd;border-radius:4px;">
+                <div class="gk-sf-checkbox">
+                    <input type="checkbox" name="gk_confirm_business" id="gk_confirm_business" value="1" required>
+                    <label for="gk_confirm_business">Jag bekräftar att ansökan gäller företagskonto.</label>
                 </div>
 
-                <div style="margin-bottom:1.25rem;">
-                    <label style="display:block;font-weight:600;margin-bottom:.35rem;">Kontaktperson *</label>
-                    <input type="text" name="gk_contact_name" required style="width:100%;padding:.6rem .8rem;border:1px solid #ddd;border-radius:4px;">
-                </div>
-
-                <div style="margin-bottom:1.25rem;">
-                    <label style="display:block;font-weight:600;margin-bottom:.35rem;">E-postadress *</label>
-                    <input type="email" name="gk_email" required style="width:100%;padding:.6rem .8rem;border:1px solid #ddd;border-radius:4px;">
-                </div>
-
-                <div style="margin-bottom:1.25rem;">
-                    <label style="display:block;font-weight:600;margin-bottom:.35rem;">Telefonnummer</label>
-                    <input type="tel" name="gk_phone" style="width:100%;padding:.6rem .8rem;border:1px solid #ddd;border-radius:4px;">
-                </div>
-
-                <div style="margin-bottom:1.25rem;">
-                    <label style="display:block;font-weight:600;margin-bottom:.35rem;">Leveransadress</label>
-                    <input type="text" name="gk_address" style="width:100%;padding:.6rem .8rem;border:1px solid #ddd;border-radius:4px;">
-                </div>
-
-                <div style="margin-bottom:1.5rem;">
-                    <label style="display:block;font-weight:600;margin-bottom:.35rem;">Meddelande (valfritt)</label>
-                    <textarea name="gk_message" rows="4" style="width:100%;padding:.6rem .8rem;border:1px solid #ddd;border-radius:4px;resize:vertical;"></textarea>
-                </div>
-
-                <button type="submit" style="background:#9A0002;color:#fff;padding:.75rem 2rem;border:none;border-radius:4px;font-size:1rem;font-weight:600;cursor:pointer;">
-                    Skicka ansökan
-                </button>
+                <button type="submit" class="gk-sf-submit">Skicka ansökan</button>
             </form>
         </div>
         <?php
@@ -140,7 +226,7 @@ class GK_Signups {
         update_post_meta( $post_id, 'gk_contact_name', $contact );
         update_post_meta( $post_id, 'gk_email',        $email );
         update_post_meta( $post_id, 'gk_phone',        sanitize_text_field( $_POST['gk_phone'] ?? '' ) );
-        update_post_meta( $post_id, 'gk_address',      sanitize_text_field( $_POST['gk_address'] ?? '' ) );
+        update_post_meta( $post_id, 'gk_city',         sanitize_text_field( $_POST['gk_city'] ?? '' ) );
         update_post_meta( $post_id, 'gk_message',      sanitize_textarea_field( $_POST['gk_message'] ?? '' ) );
         update_post_meta( $post_id, 'gk_submitted_at', current_time( 'mysql' ) );
 
