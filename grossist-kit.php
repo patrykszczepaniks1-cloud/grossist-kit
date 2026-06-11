@@ -47,7 +47,7 @@ add_action( 'plugins_loaded', function () {
 
 // ─── Activation ──────────────────────────────────────────────────────────────
 register_activation_hook( __FILE__, function () {
-    // Register signup post type and flush rewrite rules
+    require_once plugin_dir_path( __FILE__ ) . 'includes/class-signups.php';
     GK_Signups::register_post_type();
     flush_rewrite_rules();
 } );
