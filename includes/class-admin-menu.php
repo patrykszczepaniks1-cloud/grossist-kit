@@ -91,7 +91,7 @@ class GK_Admin_Menu {
             'groups'    => 'Kundgrupper och prisnivåer',
         ];
         ?>
-        <div class="gk-root">
+        <div class="gk-root wrap">
 
             <!-- SIDEBAR -->
             <aside class="gk-sidebar">
