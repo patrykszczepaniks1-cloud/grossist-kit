@@ -147,7 +147,7 @@ class GK_Signups {
 
                     <div class="gk-sf-field">
                         <label>Organisationsnummer *</label>
-                        <input type="text" name="gk_org_number" required placeholder="556000-0000">
+                        <input type="text" name="gk_org_number" required placeholder="556000-0000" id="gk-sf-org" class="gk-org-fmt" autocomplete="off">
                     </div>
 
                     <div class="gk-sf-field">
@@ -184,6 +184,18 @@ class GK_Signups {
 
                 <button type="submit" class="gk-sf-submit">Skicka ansökan</button>
             </form>
+        <script>
+        (function(){
+          var el = document.getElementById('gk-sf-org');
+          if(!el) return;
+          el.addEventListener('input', function(){
+            var v = this.value.replace(/[^0-9]/g,'');
+            if(v.length > 10) v = v.slice(0,10);
+            if(v.length > 6) v = v.slice(0,6) + '-' + v.slice(6);
+            this.value = v;
+          });
+        })();
+        </script>
         </div>
         <?php
         return ob_get_clean();

@@ -30,24 +30,34 @@ class GK_Admin_Menu {
     public function enqueue_assets( string $hook ): void {
         if ( 'toplevel_page_grossist-kit' !== $hook ) return;
 
-        // Preconnect to Google Fonts for faster icon font load
-        wp_enqueue_style( 'google-fonts-preconnect', 'https://fonts.gstatic.com', [], null );
-
-        // Material Icons Round — enqueue with display=block to prevent invisible icons
+        // Material Icons — loaded as a proper link tag, not @import
         wp_enqueue_style(
-            'material-icons',
-            'https://fonts.googleapis.com/icon?family=Material+Icons+Round&display=block',
+            'material-icons-round',
+            'https://fonts.googleapis.com/icon?family=Material+Icons+Round',
             [],
             null
         );
 
-        wp_enqueue_style( 'grossist-kit-dashboard', GK_PLUGIN_URL . 'assets/dashboard.css', [ 'material-icons' ], GK_VERSION );
-        wp_enqueue_script( 'grossist-kit-dashboard', GK_PLUGIN_URL . 'assets/dashboard.js', [ 'jquery' ], GK_VERSION, true );
+        wp_enqueue_style(
+            'grossist-kit-dashboard',
+            GK_PLUGIN_URL . 'assets/dashboard.css',
+            [ 'material-icons-round' ],
+            GK_VERSION
+        );
+
+        wp_enqueue_script(
+            'grossist-kit-dashboard',
+            GK_PLUGIN_URL . 'assets/dashboard.js',
+            [ 'jquery' ],
+            GK_VERSION,
+            true
+        );
+
         wp_localize_script( 'grossist-kit-dashboard', 'gkData', [
-            'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
-            'nonce'       => wp_create_nonce( 'gk_ajax' ),
-            'editNonce'   => wp_create_nonce( 'gk_edit_customer' ),
-            'adminPost'   => admin_url( 'admin-post.php' ),
+            'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
+            'nonce'     => wp_create_nonce( 'gk_ajax' ),
+            'editNonce' => wp_create_nonce( 'gk_edit_customer' ),
+            'adminPost' => admin_url( 'admin-post.php' ),
         ] );
     }
 
@@ -81,7 +91,6 @@ class GK_Admin_Menu {
             'groups'    => 'Kundgrupper och prisnivåer',
         ];
         ?>
-        <div class="gk-wrap wrap">
         <div class="gk-root">
 
             <!-- SIDEBAR -->
@@ -169,8 +178,7 @@ class GK_Admin_Menu {
                     <div class="gk-footer">GrossistKit <?php echo GK_VERSION; ?> · <?php echo esc_html( $site_name ); ?></div>
                 </div>
             </div>
-        </div><!-- /.gk-root -->
-        </div><!-- /.gk-wrap.wrap -->
+        </div>
         <?php
     }
 
@@ -433,7 +441,7 @@ class GK_Admin_Menu {
                             </div>
                             <div class="gk-field">
                                 <label>Organisationsnummer</label>
-                                <input type="text" name="gk_org_number" placeholder="556000-0000">
+                                <input type="text" name="gk_org_number" placeholder="556000-0000" class="gk-org-input">
                             </div>
                             <div class="gk-field">
                                 <label>Kontaktperson <span class="req">*</span></label>
@@ -591,7 +599,7 @@ class GK_Admin_Menu {
                             </div>
                             <div class="gk-field">
                                 <label>Organisationsnummer</label>
-                                <input type="text" name="gk_org_number" id="gk-edit-org" placeholder="556000-0000">
+                                <input type="text" name="gk_org_number" id="gk-edit-org" class="gk-org-input" placeholder="556000-0000">
                             </div>
                             <div class="gk-field">
                                 <label>Kundgrupp</label>

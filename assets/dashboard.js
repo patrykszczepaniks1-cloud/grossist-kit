@@ -2,6 +2,15 @@
 (function ($) {
   'use strict';
 
+  /* ── Org number auto-format XXXXXX-XXXX ── */
+  $(document).on('input', '.gk-org-input', function () {
+    var v   = $(this).val().replace(/[^0-9]/g, '');
+    if (v.length > 10) v = v.slice(0, 10);
+    if (v.length > 6)  v = v.slice(0, 6) + '-' + v.slice(6);
+    $(this).val(v);
+  });
+
+
   var rowIndex = 1;
   var currentGroup = 'bas';
 

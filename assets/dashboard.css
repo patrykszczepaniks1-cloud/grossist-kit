@@ -4,6 +4,7 @@
    ═══════════════════════════════════════════════════════════════ */
 
 
+
 :root {
   /* Canvas */
   --c-bg:          #F5F6FA;
@@ -60,56 +61,31 @@
 }
 
 /* ── Reset ─────────────────────────────────────────────────── */
-/* The .gk-wrap div is our outer WordPress .wrap container */
-#wpbody-content .gk-wrap.wrap { margin-right: 0; padding-top: 0; max-width: none; }
-#wpbody-content .gk-wrap.wrap h1.wp-heading-inline { display: none; }
+/* WordPress admin overrides — must be aggressive */
+#wpbody-content .wrap.gk-root,
+.gk-root.wrap {
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width: none !important;
+  float: none !important;
+}
+#wpbody-content .wrap { margin-right: 0; padding-top: 0; }
+#wpbody-content .wrap h1.wp-heading-inline { display: none !important; }
+#wpbody-content .gk-root h1.wp-heading-inline { display: none !important; }
 
 .gk-root * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif; }
 
 /* ── Root shell ────────────────────────────────────────────── */
 .gk-root {
-  display: flex;
-  min-height: calc(100vh - 32px);
+  display: flex !important;
+  min-height: calc(100vh - 56px);
   background: var(--c-bg);
-  margin-top: 8px;
+  margin: 8px -20px 0 -2px !important;
   border-radius: var(--r-xl) var(--r-xl) 0 0;
   overflow: hidden;
   box-shadow: var(--sh-lg);
+  position: relative;
 }
-
-/* ── WordPress admin style overrides ───────────────────────── */
-/* Prevent WP admin global input/select/button styles from leaking into the dashboard */
-.gk-root input,
-.gk-root select,
-.gk-root textarea,
-.gk-root button {
-  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
-}
-/* WP admin sets input[type=text] height — reset it inside our dashboard */
-.gk-root input[type="text"],
-.gk-root input[type="email"],
-.gk-root input[type="tel"],
-.gk-root input[type="number"],
-.gk-root input[type="search"] {
-  height: auto;
-  line-height: normal;
-  box-shadow: none;
-  -webkit-appearance: none;
-}
-/* WP admin injects `border-color: #8c8f94` on focus — override */
-.gk-root input:focus,
-.gk-root select:focus,
-.gk-root textarea:focus {
-  outline: none !important;
-  box-shadow: none;
-}
-/* WP admin sets p { margin-bottom: 1em } — keep our layout clean */
-.gk-root p { margin: 0; }
-/* WP admin sets h1,h2,h3 font sizes globally */
-.gk-root h1, .gk-root h2, .gk-root h3 { font-weight: inherit; color: inherit; }
-/* Prevent WP's table styles from overriding our customer table */
-.gk-root table { border-collapse: collapse; }
-.gk-root table th, .gk-root table td { padding: inherit; }
 
 /* ══════════════════════════════════════════════════════════════
    SIDEBAR
